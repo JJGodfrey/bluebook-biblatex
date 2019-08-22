@@ -10,8 +10,8 @@ For further information about coverage see the documentation (when it has been a
 ## The package
 
 The package consists of five principal files (`bluebook.bbx`, `bluebook.cbx`, and three language definition files,
-`english-bluebook.lbx`, `british-bluebook.lbx`, and `american-bluebook.lbx`). There is also a very short index
-style file, `bluebook.ist`. Those files are derived from those [oscola-biblatex](https://github.com/PaulStanley/oscola-biblatex) 
+`english-bluebook.lbx`, `british-bluebook.lbx`, and `american-bluebook.lbx`). <!--There is also a very short index
+style file, `bluebook.ist`.--> Those files are derived from those [oscola-biblatex](https://github.com/PaulStanley/oscola-biblatex) 
 and are copyright (c) Paul Stanley 2012-18. Modifications to those files are copyright (c) Joseph Godfrey 2019. For a list of modifications made, please refer to the commit history of this repository.
 
 This work may be distributed and/or modified under the conditions of
