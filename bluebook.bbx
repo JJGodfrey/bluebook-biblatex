@@ -1,7 +1,8 @@
-% Legal Style Citations using OSCOLA
-% Copyright Paul Stanley 2014-2018
-% This work consists of oscola.bbx, english-oscola.lbx, british-oscola.lbx,
-% oscola.cbx, american-oscola.lbx and oscola.ist.
+% Legal Style Citations using The Bluebook
+% Copyright Joseph Godfrey 2019
+% Modified from oscola-biblatex, Copyright Paul Stanley 2014-2018
+% This work consists of bluebook.bbx, english-bluebook.lbx, british-bluebook.lbx,
+% bluebook.cbx, american-bluebook.lbx and bluebook.ist.
 % This work may be distributed and/or modified under the
 % conditions of the LaTeX Project Public License, either version 1.3
 % of this license or (at your option) any later version.
@@ -11,9 +12,9 @@
 % version 2005/12/01 or later.
 %
 % This work has the LPPL maintenance status 'maintained'.
-% The current maintainer of this work is Paul Stanley (pstanley@essexcourt.net)
+% The current maintainer of this work is Joseph Godfrey
 
-\ProvidesFile{oscola.bbx}[2019/01/20 v1.6 Biblatex bibliography style for OSCOLA standard]
+\ProvidesFile{bluebook.bbx}[2019/01/20 v1.6 Biblatex bibliography style for OSCOLA standard]
 
 \RequireBibliographyStyle{authortitle}
 
@@ -23,12 +24,6 @@
   \ifstrequal{#1}{italic}
     {\DeclareFieldFormat[jurisdiction]{shorthand}{\textit{##1}}}
     {}}
-
-\newtoggle{bbx@capibid}% Capitalize Ibid in footnotes
-\DeclareBibliographyOption{ibidstyle}[lc]{%
-  \ifstrequal{#1}{uc}
-    {\global\toggletrue{bbx@capibid}}
-    {\togglefalse{bbx@capibid}}}
 
 \newtoggle{bbx@ecliuse}\newtoggle{bbx@eclionly}
 \DeclareBibliographyOption{ecli}[add]{%
@@ -58,11 +53,11 @@
 % We ensure that there will always be a trash index
 \AtEndPreamble{%
   \@ifpackageloaded{imakeidx}{\makeindex[name=trash]}
-     {\@ifclassloaded{memoir}{\PackageWarning{biblatex-oscola}{To use indexing with OSCOLA and the memoir class, you need to load imakeidx.}}
+     {\@ifclassloaded{memoir}{\PackageWarning{biblatex-bluebook}{To use indexing with OSCOLA and the memoir class, you need to load imakeidx.}}
        {\@ifpackageloaded{index}{\newindex{trash}{tdx}{tnd}{Miscellaneous}}
-         {\@ifpackageloaded{multind}{\PackageWarning{biblatex-oscola}{Multind is incompatible with biblatex-oscola. Use imakeidx or index}}
+         {\@ifpackageloaded{multind}{\PackageWarning{biblatex-bluebook}{Multind is incompatible with biblatex-bluebook. Use imakeidx or index}}
            {\iftoggle{blx@citeindex}
-             {\PackageWarning{biblatex-oscola}
+             {\PackageWarning{biblatex-bluebook}
              {You need to load imakeidx or index. Indexing will probably fail:}}{}}}}}}
 
 % The bibliography and citation styles use different forms of name
@@ -146,7 +141,7 @@
 \DeclareEntryOption{year-essential}[true]{%
     \setboolean{bbx@year-essential}{#1}}
 
-\DeclareLanguageMappingSuffix{-oscola}
+\DeclareLanguageMappingSuffix{-bluebook}
 
 % Various aliases
 \DeclareBibliographyAlias{inproceedings}{book}
@@ -388,7 +383,7 @@
   \mkfirstpage*{#1}}
 \DeclareFieldFormat[jurisdiction]{usere}{%
   \mkfirstpage*{#1}}
-\DeclareFieldFormat[jurisdiction]{title}{\mkbibemph{#1}}
+\DeclareFieldFormat[jurisdiction]{title}{{#1},} %changed
 \DeclareFieldFormat[jurisdiction]{subtitle}{\mkbibemph{#1}}
 \DeclareFieldFormat[legal]{pages}{\mkfirstpage{#1}}
 \DeclareFieldFormat[inreference]{title}{\mkbibquote{#1}}
@@ -2996,7 +2991,7 @@
    \fi}
    {\@ifpackageloaded{index}
     {\renewcommand{\printindexearly}{\@printindex}}
-    {\renewcommand{\printindexearly}[1]{\PackageError{biblatex-oscola}{You need to load either the imakeidx or index package:}}}}}
+    {\renewcommand{\printindexearly}[1]{\PackageError{biblatex-bluebook}{You need to load either the imakeidx or index package:}}}}}
 
 % Based on imki@putindexsplit
 \newcommand{\bbx@putimindex}[1]{%
