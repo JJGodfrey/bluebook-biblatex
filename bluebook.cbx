@@ -89,7 +89,7 @@
        \printfield[title]{labeltitle}}%
     \setunit*{\addspace}}%
   \bbx@unsetpostnotedelim%
-  \printtext[parens]{%
+  \printtext{% removes parentheses
     \midsentence
     \bibstring{seenote}\addnbspace%
     \ref{cbx@\csuse{cbx@f@\thefield{entrykey}}}%
@@ -129,7 +129,7 @@
       \newunit
       \iffootnote
       {\bbx@unsetpostnotedelim%
-  \printtext[parens]{%
+  \printtext{% removes parentheses
     \midsentence
     \bibstring{seenote}\addnbspace%
     \ref{cbx@\csuse{cbx@f@\thefield{entrykey}}}%
@@ -154,7 +154,7 @@
      {\usebibmacro{makeshorteu}}%
      {\usebibmacro{eutreatypostnote}\printfield{shorttitle}}%
   \ifboolexpr{test {\iffieldundef{shorthand}} and test {\iffootnote}}
-     {\newunit\printtext[parens]{%
+     {\newunit\printtext{% removes parentheses
        \midsentence
        \bibstring{seenote}\addnbspace%
        \ref{cbx@\csuse{cbx@f@\thefield{entrykey}}}%
@@ -312,7 +312,7 @@
                  or test {\iffieldundef{postnote}}) 
                and not 
                  test{\iffieldequals{entrysubtype}{\subtypecourtrules}} }%
-  {\printtext[bibhyperlink]{\iftoggle{bbx@capibid}{}{\midsentence}\bibstring{ibidem}}%
+  {\printtext[bibhyperlink]{\bibstring{ibidem}}%
   \ifloccit
     {\global\toggletrue{cbx:loccit}}
     {}%
@@ -331,7 +331,7 @@
                  or test {\iffieldundef{postnote}}) 
                and not 
                  test{\iffieldequals{entrysubtype}{\subtypecourtrules}} }%
-  {\printtext[bibhyperlink]{\iftoggle{bbx@capibid}{\midsentence}{}\bibstring{ibidem}}%
+  {\printtext[bibhyperlink]{\bibstring{ibidem}}%
   \ifloccit
     {\global\toggletrue{cbx:loccit}}
     {}}
