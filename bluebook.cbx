@@ -77,7 +77,7 @@
 
 \newbibmacro*{footcite:note:old}{%
   \ifboolexpr{ test {\ifentrytype{misc}} 
-               or test {\ifentrytype{legal}} 
+               or test {\ifentrytype{legal}}% 
                or test {\ifentrytype{jurisdiction}}}
     {\printfield[title]{labeltitle}\setunit*{\addspace}}
     {\ifnameundef{labelname}%
@@ -91,7 +91,7 @@
   \bbx@unsetpostnotedelim%
   \printtext{% removes parentheses
     \midsentence
-    \bibstring{seenote}\addnbspace%
+    \addcomma\addnbspace\bibstring{seenote}\addnbspace% Adds a comma before supra
     \ref{cbx@\csuse{cbx@f@\thefield{entrykey}}}%
     \iftoggle{cbx:pageref}%
       {\ifsamepage{\the\value{instcount}}%
@@ -131,7 +131,7 @@
       {\bbx@unsetpostnotedelim%
   \printtext{% removes parentheses
     \midsentence
-    \bibstring{seenote}\addnbspace%
+    \bibstring{seenote}\addnbspace% Adds a comma before supra
     \ref{cbx@\csuse{cbx@f@\thefield{entrykey}}}%
     \iftoggle{cbx:pageref}%
       {\ifsamepage{\the\value{instcount}}%
@@ -156,7 +156,7 @@
   \ifboolexpr{test {\iffieldundef{shorthand}} and test {\iffootnote}}
      {\newunit\printtext{% removes parentheses
        \midsentence
-       \bibstring{seenote}\addnbspace%
+        \addcomma\addnbspace\bibstring{seenote}\addnbspace% Adds a comma before supra
        \ref{cbx@\csuse{cbx@f@\thefield{entrykey}}}%
        \iftoggle{cbx:pageref}%
       {\ifsamepage{\the\value{instcount}}%

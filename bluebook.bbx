@@ -383,7 +383,7 @@
   \mkfirstpage*{#1}}
 \DeclareFieldFormat[jurisdiction]{usere}{%
   \mkfirstpage*{#1}}
-\DeclareFieldFormat[jurisdiction]{title}{{#1},} %changed
+\DeclareFieldFormat[jurisdiction]{title}{{#1}} %removed italicisation
 \DeclareFieldFormat[jurisdiction]{subtitle}{\mkbibemph{#1}}
 \DeclareFieldFormat[legal]{pages}{\mkfirstpage{#1}}
 \DeclareFieldFormat[inreference]{title}{\mkbibquote{#1}}
@@ -1173,6 +1173,7 @@
   {}%
   {\usebibmacro{title}%
    \newunit\newblock}%
+   \addcomma\addspace%stops double commas
   \usebibmacro{neutralcite}%
   \iffieldundef{journaltitle}% UNREPORTED CASE
     {}%
@@ -1755,6 +1756,7 @@
     \printfield{postnote}%
     \global\toggletrue{cbx@postnoteprinted}}}
 
+
 \newbibmacro*{postnotepagination}{%
   \ifboolexpr{ (
      test {\ifkeyword{eu}} 
@@ -1762,25 +1764,27 @@
      {\usebibmacro{postnotepaginationpara}}% Default is "para" for EU and ECHR
      {\usebibmacro{postnotepaginationpage}}} % Default is "page"
 
+%The next two macros are probably spaghetti code that can be cleaned up, but I'm not confident enough to mess with them
+
 \newbibmacro*{postnotepaginationpara}{%
   \ifboolexpr{ (
     test {\iffieldundef{pagination}}
     or
     test {\iffieldequals{pagination}{\paragraphtext}} )}
-      {\printfield[paragraph:text]{postnote}}%
+      {\addcomma\addspace\printfield[paragraph:text]{postnote}}% Adds a comma before the postnote
       {\iffieldequals{pagination}{\paragraphmarkings}%
-            {\nopunct\addspace\printfield[paragraphed]{postnote}}
-	    {\printfield[postnote:old]{postnote}}}}
+            {\addcomma\addspace\printfield[paragraphed]{postnote}}% Changes nopunct to addcomma
+	    {\addcomma\addspace\printfield[postnote:old]{postnote}}}}% Adds a comma before the postnote
 
 \newbibmacro*{postnotepaginationpage}{%
   \ifboolexpr{ (
     test {\iffieldundef{pagination}}
     or
     test {\iffieldequals{pagination}{\pagemarkings}} )}
-      {\printfield{postnote}}%
+      {\addcomma\addspace\printfield{postnote}}% Adds a comma before the postnote
       {\iffieldequals{pagination}{\paragraphmarkings}
-            {\nopunct\addspace\printfield[paragraphed]{postnote}}
-	    {\printfield[postnote:old]{postnote}}}}
+            {\addcomma\addspace\printfield[paragraphed]{postnote}}% Changes nopunct to addcomma
+	    {\addcomma\addspace\printfield[postnote:old]{postnote}}}}% Adds a comma before the postnote
 
 \newbibmacro*{publicationinfo}{%
   \newunit
@@ -2129,6 +2133,7 @@
 \newbibmacro{usjuriscitation}{%
  \usebibmacro{title}%
   \newunit\newblock%
+  \addcomma\addspace%stops double commas
   \iffieldundef{journaltitle}%
     {\printfield{number}%
      \setunit{\addcomma\space}%
