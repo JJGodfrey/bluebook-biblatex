@@ -433,6 +433,10 @@
          {#1\space\bibstring{and}\addspace}%
          {#1\addcomma\space}}}%
 
+% Field formats added in added in bluebook-biblatex
+\DeclareFieldFormat[constitution]{title}{{#1}\addperiod}
+\DeclareFieldFormat[constitution]{subdivision}{{#1}\addperiod}
+\DeclareFieldFormat[constitution]{amendment}{#1}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -616,13 +620,15 @@
        {\usebibmacro{legislation:bill}}%
        {\ifkeyword{eu}%
          {\usebibmacro{eulegislation}}%
-         {\printfield[default]{title}%
-          \setunit{\addspace}%
-          \printfield[default]{year}%
-          \setunit*{\addspace}%
-          \usebibmacro{legnumber}%
-          \newunit\newblock
-          \usebibmacro{legsupp}}}}% Adds additional material for welsh statutory instruments
+         {\ifkeyword{us}%
+          {\usebibmacro{uslegislation}}%
+          {\printfield[default]{title}%
+            \setunit{\addspace}%
+            \printfield[default]{year}%
+            \setunit*{\addspace}%
+            \usebibmacro{legnumber}%
+            \newunit\newblock
+          \usebibmacro{legsupp}}}}}% Adds additional material for welsh statutory instruments
   \newunit
   \usebibmacro{legislation:note}%
   \usebibmacro{finentry}}
@@ -830,6 +836,20 @@
   \newunit%
   \usebibmacro{pageref}%
   \usebibmacro{finentry}}%
+
+% New drivers added in bluebook-biblatex
+
+\DeclareBibliographyDriver{constitution}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printfield{title}%
+  \newunit{\addspace}%
+  \printfield{subdivision}% This doesn't work. I have no idea why.
+  \iffieldundef{amendment}%
+    {}
+    {\setunit{\addspace}%
+    \printfield{article}}%
+  \usebibmacro{finentry}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -2454,6 +2474,24 @@
      {\siganddate{#1}}
      {\addcomma\space\siganddate{#1}}}
 
+%New macros added in bluebook-biblatex
+
+\newbibmacro{uslegislation}{%
+  \iffieldundef{title}%
+    {}%
+    {\printfield{title}\addcomma\addspace}%
+  \usebibmacro{uslegref}}
+
+\newbibmacro{uslegref}{%
+  \printfield[misc]{volume} % prepending "vol", fix
+  \newunit\newblock%
+  \printfield{journaltitle}
+  \newunit\newblock%
+  \printtext{\S} % change to check if multiple sections are cited
+  \newunit\newblock%
+  \printfield{pages}%
+  \newunit\newblock%
+  \printfield[parens]{year}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
