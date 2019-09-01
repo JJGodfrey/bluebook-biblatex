@@ -620,7 +620,7 @@
        {\usebibmacro{legislation:bill}}%
        {\ifkeyword{eu}%
          {\usebibmacro{eulegislation}}%
-         {\ifkeyword{us}%
+         {\ifkeyword{us}% adds support for US legislation
           {\usebibmacro{uslegislation}}%
           {\printfield[default]{title}%
             \setunit{\addspace}%
@@ -2483,7 +2483,7 @@
   \usebibmacro{uslegref}}
 
 \newbibmacro{uslegref}{%
-  \printfield[misc]{volume} % prepending "vol", fix
+  \printfield[default]{volume}
   \newunit\newblock%
   \printfield{journaltitle}
   \newunit\newblock%
