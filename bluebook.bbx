@@ -434,6 +434,7 @@
          {#1\addcomma\space}}}%
 
 % Field formats added in added in bluebook-biblatex
+\DeclareFieldFormat[smallcaps]{journaltitle}{\textsc{#1}} %primarily used for state codes
 \DeclareFieldFormat[constitution]{title}{\textsc{#1}\addperiod}
 \DeclareFieldFormat[constitution]{subdivision}{{#1}\addperiod}
 \DeclareFieldFormat[constitution]{amendment}{#1}
@@ -2486,8 +2487,12 @@
   \iffieldundef{volume}%
     {}%
     {\printfield[default]{volume}\newunit\newblock}%
-  \printfield{journaltitle}
+  \printfield[smallcaps]{journaltitle}
   \newunit\newblock%
+  \iffieldundef{series}% adds a tit. for statutes that require i
+    {}%
+    {\printtext{tit}\addperiod\addspace\printfield{series}%
+    \addcomma\newunit\newblock}
   \printtext{\S} % change to check if multiple sections are cited
   \newunit\newblock%
   \printfield{pages}%
