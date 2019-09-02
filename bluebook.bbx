@@ -434,9 +434,10 @@
          {#1\addcomma\space}}}%
 
 % Field formats added in added in bluebook-biblatex
-\DeclareFieldFormat[constitution]{title}{{#1}\addperiod}
+\DeclareFieldFormat[constitution]{title}{\textsc{#1}\addperiod}
 \DeclareFieldFormat[constitution]{subdivision}{{#1}\addperiod}
 \DeclareFieldFormat[constitution]{amendment}{#1}
+\DeclareFieldFormat[constitution]{pages}{#1}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -842,14 +843,16 @@
 \DeclareBibliographyDriver{constitution}{%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
-  \printfield{title}%
-  \newunit{\addspace}%
-  \printfield{subdivision}% This doesn't work. I have no idea why.
+  \printfield[constitution]{title}%
+  \newunit\newblock%
+  \printfield[constitution]{subdivision}% This doesn't work. I have no idea why.
   \iffieldundef{amendment}%
-    {}
-    {\setunit{\addspace}%
-    \printfield{article}}%
-  \usebibmacro{finentry}}
+    {}%
+    {\newunit\newblock\printfield[constitution]{amendment}}%
+  \iffieldundef{pages}%
+    {}%
+    {\newunit\newblock\printtext{\S}\newunit\newblock\printfield[constitution]{pages}}%
+  \usebibmacro{finentry}}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -2480,11 +2483,9 @@
   \iffieldundef{title}%
     {}%
     {\printfield{title}\addcomma\addspace}%
-  \usebibmacro{uslegref}}
-
-\newbibmacro{uslegref}{%
-  \printfield[default]{volume}
-  \newunit\newblock%
+  \iffieldundef{volume}%
+    {}%
+    {\printfield[default]{volume}\newunit\newblock}%
   \printfield{journaltitle}
   \newunit\newblock%
   \printtext{\S} % change to check if multiple sections are cited
