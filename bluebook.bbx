@@ -66,6 +66,8 @@
   \DeclareNameAlias{default}{family-given}%
   \DeclareNameAlias{editor}{given-family}}
 
+\renewcommand*\finalnamedelim{\addspace\&\space} %ampersand for authors
+
 % Github issue 5 refers: Moewe points out that I don't need a redefinition of
 % the name:family-given bibmacro, but can simply do the following
 \renewcommand*{\revsdnamepunct}{}
@@ -277,6 +279,7 @@
 \newcommand*{\legalstarturl}{\ensuremath{\langle}}
 \newcommand*{\legalendurl}{\ensuremath{\rangle}}
 
+
 % Data Inheritances
 \DeclareDataInheritance{reference,mvreference}{inreference}{%
   \inherit{title}{booktitle}
@@ -433,8 +436,11 @@
          {#1\space\bibstring{and}\addspace}%
          {#1\addcomma\space}}}%
 
-% Field formats added in added in bluebook-biblatex
+% Field formats added in bluebook-biblatex
+\DeclareFieldFormat[smallcaps]{title}{\textsc{#1}}
 \DeclareFieldFormat[smallcaps]{journaltitle}{\textsc{#1}} %primarily used for state codes
+\DeclareFieldFormat[book]{pages}{#1}
+
 \DeclareFieldFormat[constitution]{title}{\textsc{#1}\addperiod}
 \DeclareFieldFormat[constitution]{subdivision}{{#1}\addperiod}
 \DeclareFieldFormat[constitution]{amendment}{#1}
@@ -475,7 +481,7 @@
   \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 
-\DeclareBibliographyDriver{book}{%
+\DeclareBibliographyDriver{oldbook}{% leaving for reference, remove later
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/editor+others/translator+others}%
@@ -853,6 +859,22 @@
   \iffieldundef{pages}%
     {}%
     {\newunit\newblock\printtext{\S}\newunit\newblock\printfield[constitution]{pages}}%
+  \usebibmacro{finentry}}%
+
+\DeclareBibliographyDriver{book}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \textsc{\printnames{author}} %hacky solution, but it works
+  \setunit{\addcomma\space}\newblock
+  \printfield[smallcaps]{title}
+  \usebibmacro{startpage}
+  \printtext[parens]{%
+  \usebibmacro{editor/translator}%
+  \iffieldundef{edition}%
+    {}%
+    {\printfield{edition}\addperiod%
+    \setunit{\space}\newblock}%
+  \printfield{year}}%
   \usebibmacro{finentry}}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2491,13 +2513,35 @@
   \newunit\newblock%
   \iffieldundef{series}% adds a tit. for statutes that require i
     {}%
-    {\printtext{tit}\addperiod\addspace\printfield{series}%
-    \addcomma\newunit\newblock}
+    {\printtext{tit}\setunit{\addperiod\space}\newblock\printfield{series}%
+    \setunit{\addcomma\space}\newblock}
   \printtext{\S} % change to check if multiple sections are cited
   \newunit\newblock%
   \printfield{pages}%
   \newunit\newblock%
   \printfield[parens]{year}}
+
+\newbibmacro{startpage}{%
+  \iffieldundef{pages}%
+    {}%
+    {\setunit{\space}\newblock\printfield[book]{pages}%
+    \iffieldundef{postnote}%
+    {}%
+    {\addcomma}}%
+  \iffieldundef{postnote}%
+    {}%
+    {\setunit{\space}\newblock\thefield{postnote}}%
+  \global\toggletrue{cbx@postnoteprinted}}%
+
+\newbibmacro{editor/translator}{%
+  \ifnameundef{editor}%
+    {}%
+    {\printnames{editor}\addspace\bibstring{editors}%
+    \printtext{.,}\setunit{\space}\newblock}% ., will not work unless done like this
+  \ifnameundef{translator}%
+    {}%
+    {\printnames{translator}\addspace\bibstring{translator}%
+    \printtext{.,}\setunit{\space}\newblock}}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
