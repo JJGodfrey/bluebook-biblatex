@@ -386,8 +386,8 @@
   \mkfirstpage*{#1}}
 \DeclareFieldFormat[jurisdiction]{usere}{%
   \mkfirstpage*{#1}}
-\DeclareFieldFormat[jurisdiction]{title}{{#1}} %removed italicisation
-\DeclareFieldFormat[jurisdiction]{subtitle}{\mkbibemph{#1}}
+\DeclareFieldFormat[jurisdiction]{title}{#1} %removed italicisation
+\DeclareFieldFormat[jurisdiction]{subtitle}{#1} %removed italicisation
 \DeclareFieldFormat[legal]{pages}{\mkfirstpage{#1}}
 \DeclareFieldFormat[inreference]{title}{\mkbibquote{#1}}
 \DeclareFieldFormat{newstitle}{\emph{#1}}
@@ -437,10 +437,9 @@
          {#1\addcomma\space}}}%
 
 % Field formats added in bluebook-biblatex
-\DeclareFieldFormat[smallcaps]{title}{\textsc{#1}}
 \DeclareFieldFormat[smallcaps]{journaltitle}{\textsc{#1}} %primarily used for state codes
 \DeclareFieldFormat[book]{pages}{#1}
-
+\DeclareFieldFormat[journal]{title}{\mkbibemph{#1}}
 \DeclareFieldFormat[constitution]{title}{\textsc{#1}\addperiod}
 \DeclareFieldFormat[constitution]{subdivision}{{#1}\addperiod}
 \DeclareFieldFormat[constitution]{amendment}{#1}
@@ -452,7 +451,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\DeclareBibliographyDriver{article}{%
+\DeclareBibliographyDriver{oldarticle}{% leaving for reference, remove later
   \bbx@resetpostnotedelim%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -875,6 +874,24 @@
     {\printfield{edition}\addperiod%
     \setunit{\space}\newblock}%
   \printfield{year}}%
+  \usebibmacro{finentry}}%
+
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit{\addcomma\space}\newblock%
+  \textit{\printfield[titlecase]{title}}%hacky solution, but it works
+  \setunit{\addcomma\space}\newblock%
+  \iffieldundef{volume}%
+    {}%
+    {\printfield{volume}%
+    \setunit{\space}\newblock}%
+  \printfield[smallcaps]{journaltitle}%
+  \setunit{\space}\newblock%
+  \usebibmacro{startpage}%
+  \setunit{\space}\newblock%
+  \printfield[parens]{year}%
   \usebibmacro{finentry}}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -2527,7 +2544,7 @@
     {\setunit{\space}\newblock\printfield[book]{pages}%
     \iffieldundef{postnote}%
     {}%
-    {\addcomma}}%
+    {\addcomma\addspace}}%
   \iffieldundef{postnote}%
     {}%
     {\setunit{\space}\newblock\thefield{postnote}}%
