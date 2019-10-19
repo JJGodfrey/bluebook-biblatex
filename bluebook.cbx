@@ -82,7 +82,9 @@
     {\printfield[title]{labeltitle}\setunit*{\addspace}}
     {\ifnameundef{labelname}%
       {\printfield{label}}%
-      {\printnames{labelname}}%
+      {\ifentrytype{book}}
+        {\textsc{\printnames{labelname}}}
+        {\printnames{labelname}}%
     \ifsingletitle%
       {}%
       {\setunit*{\nametitledelim}%
