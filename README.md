@@ -2,7 +2,7 @@
 
 The Bluebook package works (only!) with Biblatex (v 2.0 or later) and Biber (v 1.0 or later).
 This project is my (ongoing) attempt to modify Paul Stanley's implementation of the OSCOLA citation system to conform to The Bluebook standard. 
-Some signifiacnt changes have been made so far, though by no means to the point of usability. Due to the Bluebook's complexity, it is unlikely that this package will ever be a complete solution, it is my hope that this project will become as useful for those that need to use The Bluebook as [oscola-biblatex](https://github.com/PaulStanley/oscola-biblatex) has been for me (that is to say, very).
+Some signifiacnt changes have been made so far, arguably to the point where this has become usable in most cases. Due to the Bluebook's complexity, it is unlikely that this package will ever be a complete solution, but it is my hope that this project will become as useful for those that need to use The Bluebook as [oscola-biblatex](https://github.com/PaulStanley/oscola-biblatex) has been for me (that is to say, very).
 For further information about coverage see the documentation (when it has been added).
 
 # Files and licence
