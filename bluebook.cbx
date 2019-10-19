@@ -59,7 +59,7 @@
   \ifboolexpr {test {\ifciteseen} or test {\ifciteibid}}
     {\ifboolexpr {test {\iffieldundef{shorthand}} 
                   or test {\bbx@ifnottrackingcites}}
-       {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
+       {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage} % could possibly be changed to allow for short citations
           {\usebibmacro{footcite:ibid}\bbx@unsetpostnotedelim}
           {\usebibmacro{footcite:note}}}%
        {\usebibmacro{footcite:shorthand}}}
@@ -265,7 +265,7 @@
   
 \renewbibmacro*{cite:short}{%
   \ifentrytype{legislation}%
-    {\usebibmacro{cite:shortleg}}
+    {\usebibmacro{footcite:full}} % While not necessary in some circumstances, it's just easier to print the full citation every time
     {\ifboolexpr{(
        test {\ifentrytype{commentary}} 
        or (test {\ifentrytype{legal}} and not test {\iffieldequals{entrysubtype}{\treatysubtype}} )
@@ -278,14 +278,16 @@
         {\usebibmacro{cite:oldshort}}}}}
 
 \renewbibmacro*{footcite:note}{%
-  \ifboolexpr{test {\ifentrytype{legislation}}
-              or ( test {\ifentrytype{legal}} 
-                   and ( not test {\iffieldequals{entrysubtype}{\treatysubtype}} ))}%
+  \ifboolexpr{%test {\ifentrytype{legislation}} see above
+               test {\ifentrytype{legal}} 
+                   and ( not test {\iffieldequals{entrysubtype}{\treatysubtype}} )}%
     {\usebibmacro{cite:short}}%
     {\ifboolexpr{ test {\ifentrytype{commentary}} 
+                 or (test {\ifentrytype{jurisdiction}}) % see above
+                 or (test {\ifentrytype{legislation}}) % see above
 	               or  ( test {\ifentrytype{legal}} and not test {\iffieldequals{entrysubtype}{\treatysubtype}}) }%
       {\usebibmacro{footcite:full}}%
-      {\ifboolexpr{ ( test {\ifentrytype{jurisdiction}} 
+      {\ifboolexpr{ ( test {\ifentrytype{jurisdiction}} % Left for if I figure out how to implement the above
                       and 
                     ( not test {\iffieldundef{userc}} 
                       and not test {\iffieldundef{postnote}} )) 

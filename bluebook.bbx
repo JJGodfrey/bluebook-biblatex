@@ -851,10 +851,10 @@
   \usebibmacro{begentry}%
   \printfield[constitution]{title}%
   \newunit\newblock%
-  \printfield[constitution]{subdivision}% This doesn't work. I have no idea why.
+  \printtext[constitution]{subdivision}% This doesn't work. I have no idea why.
   \iffieldundef{amendment}%
     {}%
-    {\newunit\newblock\printfield[constitution]{amendment}}%
+    {\newunit\newblock\printtext[constitution]{amendment}}%
   \iffieldundef{pages}%
     {}%
     {\newunit\newblock\printtext{\S}\newunit\newblock\printfield[constitution]{pages}}%
