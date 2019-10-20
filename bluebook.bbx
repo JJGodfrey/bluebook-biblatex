@@ -441,8 +441,8 @@
 \DeclareFieldFormat[book]{pages}{#1}
 \DeclareFieldFormat[journal]{title}{\mkbibemph{#1}}
 \DeclareFieldFormat[constitution]{title}{\textsc{#1}\addperiod}
-\DeclareFieldFormat[constitution]{subdivision}{{#1}\addperiod}
-\DeclareFieldFormat[constitution]{amendment}{#1}
+\DeclareFieldFormat[constitution]{journaltitle}{{#1}\addperiod}
+\DeclareFieldFormat[constitution]{booktitle}{#1}
 \DeclareFieldFormat[constitution]{pages}{#1}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -851,10 +851,10 @@
   \usebibmacro{begentry}%
   \printfield[constitution]{title}%
   \newunit\newblock%
-  \printtext[constitution]{subdivision}% This doesn't work. I have no idea why.
-  \iffieldundef{amendment}%
+  \printfield[constitution]{journaltitle}%
+  \iffieldundef{booktitle}%
     {}%
-    {\newunit\newblock\printtext[constitution]{amendment}}%
+    {\newunit\newblock\printfield[constitution]{booktitle}}%
   \iffieldundef{pages}%
     {}%
     {\newunit\newblock\printtext{\S}\newunit\newblock\printfield[constitution]{pages}}%
@@ -3465,6 +3465,15 @@
    \step[fieldsource=title]
    \step[fieldset=indextitle,
          origfieldval=true]
+  }
+    \map[overwrite=false]{ %makes the constitution datatype work
+    \pertype{constitution}
+    \step[fieldsource=subdivision,
+          fieldtarget=journaltitle]
+    \step[fieldsource=amendment,
+          fieldtarget=booktitle]
+    \step[fieldsource=section,
+          fieldtarget=pages]
   }
  }
 }
