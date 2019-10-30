@@ -33,13 +33,16 @@ Commons Attribution 3.0-Unported License (CC BY 3.0). A copy of that
 license is available [online](http://creativecommons.org/licenses/by/3.0/deed.en_GB).
 -->
 
-## Usage
+## Statement of Nonaffiliation
+NOT AUTHORIZED BY NOR IN ANY WAY AFFILIATED WITH: The Columbia Law Review Association, Inc., The Harvard Law Review Association, the University of Pennsylvania Law Review, The Yale Law Journal Company, Inc., or The Bluebook® A Uniform System of Citation®.
+
+# Usage
 
 This package is forked from [oscola-biblatex](https://github.com/PaulStanley/oscola-biblatex), for the time being that package's documentation is fine for most use cases, but do note that the formatting differs in this package. 
 
 Added in this package is support for constitutions and support for United States statutes.
 
-### Constitutions
+## Constitutions
 
 The constitution datatype adds support for the US constitution and state constitutions. To produce a citation for section one of the 14th amendment, simply add the following to your bibliography:
 ```
@@ -62,7 +65,7 @@ To produce a citation for Section 7 of Article 10 of the Texas Constitution, add
 ```
 As anything can be entered into the subdivision box, preambles (pmbl.) are supported.
 
-### US Statutes
+## US Statutes
 
 Support for both federal and state statutes has been added to the legislation datatype. Do note that "US" needs to be entered as a keyword. References to the US code can be done as follows:
 ```
