@@ -276,8 +276,8 @@
 \newcommand{\extracitedelim}{\addcomma\space}
 \newcommand\casenotetext{\bibstring{casenote}}
 \newcommand\firstpublishedstr{\bibstring{firstpublished}}
-\newcommand*{\legalstarturl}{\ensuremath{\langle}}
-\newcommand*{\legalendurl}{\ensuremath{\rangle}}
+%\newcommand*{\legalstarturl}{\ensuremath{\langle}} % Unused in bluebook
+%\newcommand*{\legalendurl}{\ensuremath{\rangle}}
 
 
 % Data Inheritances
@@ -368,8 +368,9 @@
 % Field Formats
 
 \DeclareFieldFormat{paragraph:text}{\paratextformatted{#1}}
-\DeclareFieldFormat{url}{\legalstarturl\url{#1}\legalendurl}
-\DeclareFieldFormat{urldate}{\bibstring{urlseen}\space#1}
+% \DeclareFieldFormat{url}{\legalstarturl\url{#1}\legalendurl}
+\DeclareFieldFormat{url}{\url{#1}}
+\DeclareFieldFormat{urldate}{\mkbibparens{#1}}
 \DeclareFieldFormat{postnote:old}{%
   \ifentrytype{legislation}%
    {\usebibmacro{legref}}%
@@ -691,22 +692,6 @@
 %\DeclareBibliographyDriver{misc:index}{%
 %  \printfield{indextitle}}%
 
-\DeclareBibliographyDriver{online}{%
-  \usebibmacro{bibindex}%
-  \usebibmacro{begentry}%
-  \usebibmacro{author/editor+others/translator+others}%
-  \setunit{\addcomma\space}%
-  \newblock
-  \usebibmacro{online:title}%
-  \newunit
-  \usebibmacro{publicationinfo:online}%
-  \newunit\newblock%
-  \usebibmacro{doi+eprint+url}%
-  \newunit\newblock
-  \setunit{\bibpagerefpunct}\newblock
-  \newunit%
-  \usebibmacro{pageref}%
-  \usebibmacro{finentry}}
 
 \DeclareBibliographyDriver{patent}{%
   \usebibmacro{bibindex}%
@@ -893,6 +878,30 @@
   \setunit{\space}\newblock%
   \printfield[parens]{year}%
   \usebibmacro{finentry}}%
+
+\DeclareBibliographyDriver{online}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit{\addcomma\space}%
+  \newblock
+  \textit{\printfield[titlecase]{title}}%hacky solution, but it works
+  \setunit{\addcomma\space}%
+  \printfield[titlecase]{journaltitle}%
+  \iffieldundef{postnote}%
+   {}%
+   {\setunit{\addcomma\space}%
+    \printfield{postnote}%
+    \global\toggletrue{cbx@postnoteprinted}}%
+  \iffieldundef{urlyear}
+    {}
+    {\setunit{\space}%
+      \newblock
+      \printtext{\printurldate}}%
+  \setunit{\addcomma\space}%
+  \newblock%
+  \printfield{url}%
+  \usebibmacro{finentry}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -2184,14 +2193,14 @@
       {}}
 
 \renewbibmacro*{url+urldate}{%
+  \iffieldundef{urlyear}
+  {}
+  {\printtext{\printurldate}}%  
   \iffieldundef{url}
   {}
-  {\printfield{url}%
-  \iffieldundef{urlyear}
-    {}%
-    {\setunit*{\addspace}%
-     \bbx@resetpostnotedelim%
-     \printtext{\printurldate}}}}
+  {\printfield{url}%  
+  \setunit*{\addspace}%
+     \bbx@resetpostnotedelim}}
 
 \newbibmacro{usjuriscitation}{%
  \usebibmacro{title}%
@@ -2528,7 +2537,7 @@
     {\printfield[default]{volume}\newunit\newblock}%
   \printfield[smallcaps]{journaltitle}
   \newunit\newblock%
-  \iffieldundef{series}% adds a tit. for statutes that require i
+  \iffieldundef{series}% adds a tit. for statutes that require it
     {}%
     {\printtext{tit}\setunit{\addperiod\space}\newblock\printfield{series}%
     \setunit{\addcomma\space}\newblock}
