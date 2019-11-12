@@ -73,18 +73,19 @@ Support for both federal and state statutes has been added to the legislation da
   title = {Piracy under law of nations},
   volume = {18},
   journaltitle = {U.S.C.},
-  pages = {1651},
   year = {2018},
+  pagination = {section},
   keywords = {us}
 }
 ```
+Pagination may be ```section``` or ```sections``` specific sections are referenced by pinpoint citations. For the above example ```\cite[1651]{USCPiracy}```.
 
 Similarly, state statutes can be entered like this:
 ```
 @legislation{Test2,
 	journaltitle = {Del. Code Ann.},
 	series = {28},
-	pages = {1707},
+	pagination = {section},
 	year = {1999},
 	keywords = {us}
 }

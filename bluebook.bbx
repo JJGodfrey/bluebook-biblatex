@@ -2541,10 +2541,13 @@
     {}%
     {\printtext{tit}\setunit{\addperiod\space}\newblock\printfield{series}%
     \setunit{\addcomma\space}\newblock}
-  \printtext{\S} % change to check if multiple sections are cited
-  \newunit\newblock%
-  \printfield{pages}%
-  \newunit\newblock%
+  \iffieldundef{postnote}%
+   {}%
+   {\printtext{\bibstring{\thefield{pagination}}}%
+      \setunit{\space}\newblock%
+      \printfield{postnote}%
+    \global\toggletrue{cbx@postnoteprinted}}%
+  \setunit{\space}\newblock%
   \printfield[parens]{year}}
 
 \newbibmacro{startpage}{%
