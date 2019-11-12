@@ -78,7 +78,7 @@ Support for both federal and state statutes has been added to the legislation da
   keywords = {us}
 }
 ```
-Pagination may be ```section``` or ```sections``` specific sections are referenced by pinpoint citations. For the above example ```\cite[1651]{USCPiracy}```.
+Pagination may be ```section``` or ```sections```, specific sections are referenced by pinpoint citations. For the above example, the citation would be ```\cite[1651]{USCPiracy}```.
 
 Similarly, state statutes can be entered like this:
 ```
