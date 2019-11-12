@@ -66,6 +66,8 @@
   \DeclareNameAlias{default}{family-given}%
   \DeclareNameAlias{editor}{given-family}}
 
+\renewcommand*\finalnamedelim{\addspace\&\space} %ampersand for authors
+
 % Github issue 5 refers: Moewe points out that I don't need a redefinition of
 % the name:family-given bibmacro, but can simply do the following
 \renewcommand*{\revsdnamepunct}{}
@@ -277,6 +279,7 @@
 \newcommand*{\legalstarturl}{\ensuremath{\langle}}
 \newcommand*{\legalendurl}{\ensuremath{\rangle}}
 
+
 % Data Inheritances
 \DeclareDataInheritance{reference,mvreference}{inreference}{%
   \inherit{title}{booktitle}
@@ -383,8 +386,8 @@
   \mkfirstpage*{#1}}
 \DeclareFieldFormat[jurisdiction]{usere}{%
   \mkfirstpage*{#1}}
-\DeclareFieldFormat[jurisdiction]{title}{{#1},} %changed
-\DeclareFieldFormat[jurisdiction]{subtitle}{\mkbibemph{#1}}
+\DeclareFieldFormat[jurisdiction]{title}{#1} %removed italicisation
+\DeclareFieldFormat[jurisdiction]{subtitle}{#1} %removed italicisation
 \DeclareFieldFormat[legal]{pages}{\mkfirstpage{#1}}
 \DeclareFieldFormat[inreference]{title}{\mkbibquote{#1}}
 \DeclareFieldFormat{newstitle}{\emph{#1}}
@@ -433,6 +436,14 @@
          {#1\space\bibstring{and}\addspace}%
          {#1\addcomma\space}}}%
 
+% Field formats added in bluebook-biblatex
+\DeclareFieldFormat[smallcaps]{journaltitle}{\textsc{#1}} %primarily used for state codes
+\DeclareFieldFormat[book]{pages}{#1}
+\DeclareFieldFormat[journal]{title}{\mkbibemph{#1}}
+\DeclareFieldFormat[constitution]{title}{\textsc{#1}\addperiod}
+\DeclareFieldFormat[constitution]{journaltitle}{{#1}\addperiod}
+\DeclareFieldFormat[constitution]{booktitle}{#1}
+\DeclareFieldFormat[constitution]{pages}{#1}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -440,7 +451,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\DeclareBibliographyDriver{article}{%
+\DeclareBibliographyDriver{oldarticle}{% leaving for reference, remove later
   \bbx@resetpostnotedelim%
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
@@ -469,7 +480,7 @@
   \usebibmacro{pageref}%
   \usebibmacro{finentry}}
 
-\DeclareBibliographyDriver{book}{%
+\DeclareBibliographyDriver{oldbook}{% leaving for reference, remove later
   \usebibmacro{bibindex}%
   \usebibmacro{begentry}%
   \usebibmacro{author/editor+others/translator+others}%
@@ -616,13 +627,15 @@
        {\usebibmacro{legislation:bill}}%
        {\ifkeyword{eu}%
          {\usebibmacro{eulegislation}}%
-         {\printfield[default]{title}%
-          \setunit{\addspace}%
-          \printfield[default]{year}%
-          \setunit*{\addspace}%
-          \usebibmacro{legnumber}%
-          \newunit\newblock
-          \usebibmacro{legsupp}}}}% Adds additional material for welsh statutory instruments
+         {\ifkeyword{us}% adds support for US legislation
+          {\usebibmacro{uslegislation}}%
+          {\printfield[default]{title}%
+            \setunit{\addspace}%
+            \printfield[default]{year}%
+            \setunit*{\addspace}%
+            \usebibmacro{legnumber}%
+            \newunit\newblock
+          \usebibmacro{legsupp}}}}}% Adds additional material for welsh statutory instruments
   \newunit
   \usebibmacro{legislation:note}%
   \usebibmacro{finentry}}
@@ -829,6 +842,56 @@
   \setunit{\bibpagerefpunct}\newblock
   \newunit%
   \usebibmacro{pageref}%
+  \usebibmacro{finentry}}%
+
+% New drivers added in bluebook-biblatex
+
+\DeclareBibliographyDriver{constitution}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printfield[constitution]{title}%
+  \newunit\newblock%
+  \printfield[constitution]{journaltitle}%
+  \iffieldundef{booktitle}%
+    {}%
+    {\newunit\newblock\printfield[constitution]{booktitle}}%
+  \iffieldundef{pages}%
+    {}%
+    {\newunit\newblock\printtext{\S}\newunit\newblock\printfield[constitution]{pages}}%
+  \usebibmacro{finentry}}%
+
+\DeclareBibliographyDriver{book}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \textsc{\printnames{author}} %hacky solution, but it works
+  \setunit{\addcomma\space}\newblock
+  \printfield[smallcaps]{title}
+  \usebibmacro{startpage}
+  \printtext[parens]{%
+  \usebibmacro{editor/translator}%
+  \iffieldundef{edition}%
+    {}%
+    {\printfield{edition}\addperiod%
+    \setunit{\space}\newblock}%
+  \printfield{year}}%
+  \usebibmacro{finentry}}%
+
+\DeclareBibliographyDriver{article}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \printnames{author}%
+  \setunit{\addcomma\space}\newblock%
+  \textit{\printfield[titlecase]{title}}%hacky solution, but it works
+  \setunit{\addcomma\space}\newblock%
+  \iffieldundef{volume}%
+    {}%
+    {\printfield{volume}%
+    \setunit{\space}\newblock}%
+  \printfield[smallcaps]{journaltitle}%
+  \setunit{\space}\newblock%
+  \usebibmacro{startpage}%
+  \setunit{\space}\newblock%
+  \printfield[parens]{year}%
   \usebibmacro{finentry}}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1173,6 +1236,7 @@
   {}%
   {\usebibmacro{title}%
    \newunit\newblock}%
+   \addcomma\addspace%stops double commas
   \usebibmacro{neutralcite}%
   \iffieldundef{journaltitle}% UNREPORTED CASE
     {}%
@@ -1755,6 +1819,7 @@
     \printfield{postnote}%
     \global\toggletrue{cbx@postnoteprinted}}}
 
+
 \newbibmacro*{postnotepagination}{%
   \ifboolexpr{ (
      test {\ifkeyword{eu}} 
@@ -1762,25 +1827,27 @@
      {\usebibmacro{postnotepaginationpara}}% Default is "para" for EU and ECHR
      {\usebibmacro{postnotepaginationpage}}} % Default is "page"
 
+%The next two macros are probably spaghetti code that can be cleaned up, but I'm not confident enough to mess with them
+
 \newbibmacro*{postnotepaginationpara}{%
   \ifboolexpr{ (
     test {\iffieldundef{pagination}}
     or
     test {\iffieldequals{pagination}{\paragraphtext}} )}
-      {\printfield[paragraph:text]{postnote}}%
+      {\addcomma\addspace\printfield[paragraph:text]{postnote}}% Adds a comma before the postnote
       {\iffieldequals{pagination}{\paragraphmarkings}%
-            {\nopunct\addspace\printfield[paragraphed]{postnote}}
-	    {\printfield[postnote:old]{postnote}}}}
+            {\addcomma\addspace\printfield[paragraphed]{postnote}}% Changes nopunct to addcomma
+	    {\addcomma\addspace\printfield[postnote:old]{postnote}}}}% Adds a comma before the postnote
 
 \newbibmacro*{postnotepaginationpage}{%
   \ifboolexpr{ (
     test {\iffieldundef{pagination}}
     or
     test {\iffieldequals{pagination}{\pagemarkings}} )}
-      {\printfield{postnote}}%
+      {\addcomma\addspace\printfield{postnote}}% Adds a comma before the postnote
       {\iffieldequals{pagination}{\paragraphmarkings}
-            {\nopunct\addspace\printfield[paragraphed]{postnote}}
-	    {\printfield[postnote:old]{postnote}}}}
+            {\addcomma\addspace\printfield[paragraphed]{postnote}}% Changes nopunct to addcomma
+	    {\addcomma\addspace\printfield[postnote:old]{postnote}}}}% Adds a comma before the postnote
 
 \newbibmacro*{publicationinfo}{%
   \newunit
@@ -2129,6 +2196,7 @@
 \newbibmacro{usjuriscitation}{%
  \usebibmacro{title}%
   \newunit\newblock%
+  \addcomma\addspace%stops double commas
   \iffieldundef{journaltitle}%
     {\printfield{number}%
      \setunit{\addcomma\space}%
@@ -2449,6 +2517,48 @@
      {\siganddate{#1}}
      {\addcomma\space\siganddate{#1}}}
 
+%New macros added in bluebook-biblatex
+
+\newbibmacro{uslegislation}{%
+  \iffieldundef{title}%
+    {}%
+    {\printfield{title}\addcomma\addspace}%
+  \iffieldundef{volume}%
+    {}%
+    {\printfield[default]{volume}\newunit\newblock}%
+  \printfield[smallcaps]{journaltitle}
+  \newunit\newblock%
+  \iffieldundef{series}% adds a tit. for statutes that require i
+    {}%
+    {\printtext{tit}\setunit{\addperiod\space}\newblock\printfield{series}%
+    \setunit{\addcomma\space}\newblock}
+  \printtext{\S} % change to check if multiple sections are cited
+  \newunit\newblock%
+  \printfield{pages}%
+  \newunit\newblock%
+  \printfield[parens]{year}}
+
+\newbibmacro{startpage}{%
+  \iffieldundef{pages}%
+    {}%
+    {\setunit{\space}\newblock\printfield[book]{pages}%
+    \iffieldundef{postnote}%
+    {}%
+    {\addcomma\addspace}}%
+  \iffieldundef{postnote}%
+    {}%
+    {\setunit{\space}\newblock\thefield{postnote}}%
+  \global\toggletrue{cbx@postnoteprinted}}%
+
+\newbibmacro{editor/translator}{%
+  \ifnameundef{editor}%
+    {}%
+    {\printnames{editor}\addspace\bibstring{editors}%
+    \printtext{.,}\setunit{\space}\newblock}% ., will not work unless done like this
+  \ifnameundef{translator}%
+    {}%
+    {\printnames{translator}\addspace\bibstring{translator}%
+    \printtext{.,}\setunit{\space}\newblock}}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -3355,6 +3465,15 @@
    \step[fieldsource=title]
    \step[fieldset=indextitle,
          origfieldval=true]
+  }
+    \map[overwrite=false]{ %makes the constitution datatype work
+    \pertype{constitution}
+    \step[fieldsource=subdivision,
+          fieldtarget=journaltitle]
+    \step[fieldsource=amendment,
+          fieldtarget=booktitle]
+    \step[fieldsource=section,
+          fieldtarget=pages]
   }
  }
 }
