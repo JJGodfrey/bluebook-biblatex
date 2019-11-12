@@ -59,7 +59,7 @@
   \ifboolexpr {test {\ifciteseen} or test {\ifciteibid}}
     {\ifboolexpr {test {\iffieldundef{shorthand}} 
                   or test {\bbx@ifnottrackingcites}}
-       {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage} % could possibly be changed to allow for short citations
+       {\ifthenelse{\ifciteibid\AND\NOT\iffirstonpage}
           {\usebibmacro{footcite:ibid}\bbx@unsetpostnotedelim}
           {\usebibmacro{footcite:note}}}%
        {\usebibmacro{footcite:shorthand}}}
@@ -77,23 +77,21 @@
 
 \newbibmacro*{footcite:note:old}{%
   \ifboolexpr{ test {\ifentrytype{misc}} 
-               or test {\ifentrytype{legal}}% 
+               or test {\ifentrytype{legal}} 
                or test {\ifentrytype{jurisdiction}}}
     {\printfield[title]{labeltitle}\setunit*{\addspace}}
     {\ifnameundef{labelname}%
       {\printfield{label}}%
-      {\ifentrytype{book}}
-        {\textsc{\printnames{labelname}}}
-        {\printnames{labelname}}%
+      {\printnames{labelname}}%
     \ifsingletitle%
       {}%
       {\setunit*{\nametitledelim}%
        \printfield[title]{labeltitle}}%
     \setunit*{\addspace}}%
   \bbx@unsetpostnotedelim%
-  \printtext{% removes parentheses
+  \printtext[parens]{%
     \midsentence
-    \addcomma\addnbspace\bibstring{seenote}\addnbspace% Adds a comma before supra
+    \bibstring{seenote}\addnbspace%
     \ref{cbx@\csuse{cbx@f@\thefield{entrykey}}}%
     \iftoggle{cbx:pageref}%
       {\ifsamepage{\the\value{instcount}}%
@@ -131,9 +129,9 @@
       \newunit
       \iffootnote
       {\bbx@unsetpostnotedelim%
-  \printtext{% removes parentheses
+  \printtext[parens]{%
     \midsentence
-    \bibstring{seenote}\addnbspace% Adds a comma before supra
+    \bibstring{seenote}\addnbspace%
     \ref{cbx@\csuse{cbx@f@\thefield{entrykey}}}%
     \iftoggle{cbx:pageref}%
       {\ifsamepage{\the\value{instcount}}%
@@ -156,9 +154,9 @@
      {\usebibmacro{makeshorteu}}%
      {\usebibmacro{eutreatypostnote}\printfield{shorttitle}}%
   \ifboolexpr{test {\iffieldundef{shorthand}} and test {\iffootnote}}
-     {\newunit\printtext{% removes parentheses
+     {\newunit\printtext[parens]{%
        \midsentence
-        \addcomma\addnbspace\bibstring{seenote}\addnbspace% Adds a comma before supra
+       \bibstring{seenote}\addnbspace%
        \ref{cbx@\csuse{cbx@f@\thefield{entrykey}}}%
        \iftoggle{cbx:pageref}%
       {\ifsamepage{\the\value{instcount}}%
@@ -267,7 +265,7 @@
   
 \renewbibmacro*{cite:short}{%
   \ifentrytype{legislation}%
-    {\usebibmacro{footcite:full}} % While not necessary in some circumstances, it's just easier to print the full citation every time
+    {\usebibmacro{cite:shortleg}}
     {\ifboolexpr{(
        test {\ifentrytype{commentary}} 
        or (test {\ifentrytype{legal}} and not test {\iffieldequals{entrysubtype}{\treatysubtype}} )
@@ -280,16 +278,14 @@
         {\usebibmacro{cite:oldshort}}}}}
 
 \renewbibmacro*{footcite:note}{%
-  \ifboolexpr{%test {\ifentrytype{legislation}} see above
-               test {\ifentrytype{legal}} 
-                   and ( not test {\iffieldequals{entrysubtype}{\treatysubtype}} )}%
+  \ifboolexpr{test {\ifentrytype{legislation}}
+              or ( test {\ifentrytype{legal}} 
+                   and ( not test {\iffieldequals{entrysubtype}{\treatysubtype}} ))}%
     {\usebibmacro{cite:short}}%
     {\ifboolexpr{ test {\ifentrytype{commentary}} 
-                 or (test {\ifentrytype{jurisdiction}}) % see above
-                 or (test {\ifentrytype{legislation}}) % see above
 	               or  ( test {\ifentrytype{legal}} and not test {\iffieldequals{entrysubtype}{\treatysubtype}}) }%
       {\usebibmacro{footcite:full}}%
-      {\ifboolexpr{ ( test {\ifentrytype{jurisdiction}} % Left for if I figure out how to implement the above
+      {\ifboolexpr{ ( test {\ifentrytype{jurisdiction}} 
                       and 
                     ( not test {\iffieldundef{userc}} 
                       and not test {\iffieldundef{postnote}} )) 
@@ -316,7 +312,7 @@
                  or test {\iffieldundef{postnote}}) 
                and not 
                  test{\iffieldequals{entrysubtype}{\subtypecourtrules}} }%
-  {\printtext[bibhyperlink]{\bibstring{ibidem}}%
+  {\printtext[bibhyperlink]{\iftoggle{bbx@capibid}{}{\midsentence}\bibstring{ibidem}}%
   \ifloccit
     {\global\toggletrue{cbx:loccit}}
     {}%
@@ -335,7 +331,7 @@
                  or test {\iffieldundef{postnote}}) 
                and not 
                  test{\iffieldequals{entrysubtype}{\subtypecourtrules}} }%
-  {\printtext[bibhyperlink]{\bibstring{ibidem}}%
+  {\printtext[bibhyperlink]{\iftoggle{bbx@capibid}{\midsentence}{}\bibstring{ibidem}}%
   \ifloccit
     {\global\toggletrue{cbx:loccit}}
     {}}
