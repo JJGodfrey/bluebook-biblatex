@@ -112,6 +112,8 @@ Simply place
 * `bluebook.ist`: with the index style files in  `.../makeindex/bluebook`
 -->
 
+If you use Overlef, these files can be placed in your project's root director and they should just work.
+
 <!--
 # Version history
 Some Point     Version 1      Original release
