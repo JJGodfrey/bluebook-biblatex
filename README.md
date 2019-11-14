@@ -82,9 +82,9 @@ Pagination may be ```section``` or ```sections```, specific sections are referen
 
 Similarly, state statutes can be entered like this:
 ```
-@legislation{Test2,
-	journaltitle = {Del. Code Ann.},
-	series = {28},
+@legislation{IdahoWeights,
+	journaltitle = {Idaho Code Ann.},
+	series = {71}, %title
 	pagination = {section},
 	year = {1999},
 	keywords = {us}
