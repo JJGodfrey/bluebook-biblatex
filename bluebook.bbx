@@ -1207,7 +1207,6 @@
   {}%
   {\usebibmacro{title}%
    \newunit\newblock}%
-   \addcomma\addspace%stops double commas
   \usebibmacro{neutralcite}%
   \iffieldundef{journaltitle}% UNREPORTED CASE
     {}%
@@ -2166,8 +2165,8 @@
 
 \newbibmacro{usjuriscitation}{%
  \usebibmacro{title}%
+ \printtext{,}
   \newunit\newblock%
-  \addcomma\addspace%stops double commas
   \iffieldundef{journaltitle}%
     {\printfield{number}%
      \setunit{\addcomma\space}%
@@ -2185,6 +2184,7 @@
   \usebibmacro{court-note}%
   \newblock
   \newunit}
+
 
 \newbibmacro{us:courtid+date}{%
   \ifboolexpr{test {\iflistundef{institution}}
